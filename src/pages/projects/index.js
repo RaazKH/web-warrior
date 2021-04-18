@@ -5,11 +5,12 @@ import * as styles from '../../styles/projects.module.css'
 
 export default function Projects({ data }) {
     console.log(data)
-    const projects = data.allMarkdownRemark.nodes
+    const projects = data.projects.nodes
+    const contact = data.contact.siteMetadata.contact
 
     return (
-        <div className={styles.portfolio}>
-            <Layout>
+        <Layout>
+            <div className={styles.portfolio}>
                 <h2>Portfolio</h2> 
                 <h3>Projects & websites I've Created</h3>
                 <div className={styles.projects}>
@@ -22,15 +23,16 @@ export default function Projects({ data }) {
                         </Link>
                     ))}
                 </div>
-            </Layout>
-        </div>
+                <p>Line what you see? Email me at { contact } for a quote!</p>
+            </div>
+        </Layout>
     )
 }
 
 // export page query
 export const query = graphql`
 query ProjectsPage {
-    allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}) {
+    projects: allMarkdownRemark(sort: {fields: frontmatter___date, order: DESC}) {
         nodes {
             frontmatter {
                 slug
@@ -38,6 +40,11 @@ query ProjectsPage {
                 title
             }
             id
+        }
+    }
+    contact: site {
+        siteMetadata {
+            contact
         }
     }
 }
